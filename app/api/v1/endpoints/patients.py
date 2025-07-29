@@ -35,7 +35,22 @@ router = APIRouter()
     response_model=PatientCreateResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create a new patient",
-    description="Register a new patient in the hospital management system"
+    description="""
+    Register a new patient in the hospital management system.
+    
+    This endpoint allows medical staff to register a new patient with their personal and medical information.
+    All operations are securely logged with the user ID and IP address for audit purposes.
+    
+    Authorization:
+    - Requires medical staff role
+    - All actions are logged for compliance and security
+    
+    Returns:
+    - 201: Patient successfully created
+    - 422: Validation error in patient data
+    - 401: Unauthorized access
+    - 500: Server error
+    """
 )
 async def create_patient(
     patient_data: PatientCreate,
@@ -86,7 +101,26 @@ async def create_patient(
     "/search",
     response_model=PatientListResponse,
     summary="Search patients",
-    description="Search for patients based on various criteria with pagination"
+    description="""
+    Search for patients based on various criteria with pagination.
+    
+    This endpoint allows medical staff to search for patients using multiple filter criteria.
+    Results are paginated for better performance and usability.
+    All search parameters are optional and can be combined for more precise filtering.
+    All search operations are validated against SQL injection and properly sanitized.
+    
+    Security features:
+    - Input validation and sanitization
+    - SQL injection prevention
+    - Access control based on user role
+    - Audit logging of all search operations
+    
+    Returns:
+    - 200: List of matching patients with pagination metadata
+    - 401: Unauthorized access
+    - 422: Invalid search parameters
+    - 500: Server error
+    """
 )
 async def search_patients(
     request: Request,

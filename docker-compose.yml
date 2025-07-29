@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - AZURE_SQL_SERVER=${AZURE_SQL_SERVER}
+      - AZURE_SQL_DATABASE=${AZURE_SQL_DATABASE}
+      - AZURE_SQL_USERNAME=${AZURE_SQL_USERNAME}
+      - AZURE_SQL_PASSWORD=${AZURE_SQL_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - SYNAPSE_WORKSPACE_URL=${SYNAPSE_WORKSPACE_URL}
+      - SYNAPSE_SQL_POOL=${SYNAPSE_SQL_POOL}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./app:/app/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 
