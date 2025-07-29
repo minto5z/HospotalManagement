@@ -123,3 +123,77 @@ docker-compose up -d
 - SQL injection prevention
 - Request correlation IDs
 - Comprehensive audit logging 
+
+
+
+Based on the code I've examined, here's the table structure for the main entities in the Hospital Management System:
+1. Patient Table
+Column	Type	Constraints	Description
+patient_id	UUID	Primary Key	Unique identifier for the patient
+first_name	String(50)	NOT NULL	Patient's first name
+last_name	String(50)	NOT NULL	Patient's last name
+date_of_birth	Date	NOT NULL	Patient's date of birth
+gender	String(10)	NULL	Patient's gender
+phone_number	String(20)	NULL	Contact phone number
+email	String(100)	NULL	Email address
+address	String(500)	NULL	Physical address
+emergency_contact	String(200)	NULL	Emergency contact information
+is_active	Boolean	NOT NULL, Default: true	Whether the patient is active
+created_at	DateTime	NOT NULL	Record creation timestamp
+updated_at	DateTime	NOT NULL	Record update timestamp
+2. Doctor Table
+Column	Type	Constraints	Description
+doctor_id	UUID	Primary Key	Unique identifier for the doctor
+first_name	String(50)	NOT NULL	Doctor's first name
+last_name	String(50)	NOT NULL	Doctor's last name
+specialization	String(100)	NOT NULL	Medical specialization
+license_number	String(50)	NOT NULL, Unique	Professional license number
+department	String(100)	NULL	Hospital department
+phone_number	String(20)	NULL	Contact phone number
+email	String(100)	NULL	Email address
+is_active	Boolean	NOT NULL, Default: true	Whether the doctor is active
+created_at	DateTime	NOT NULL	Record creation timestamp
+updated_at	DateTime	NOT NULL	Record update timestamp
+3. Appointment Table
+Column	Type	Constraints	Description
+appointment_id	UUID	Primary Key	Unique identifier for the appointment
+patient_id	UUID	Foreign Key (patients.patient_id)	Reference to the patient
+doctor_id	UUID	Foreign Key (doctors.doctor_id)	Reference to the doctor
+appointment_datetime	DateTime	NOT NULL	Date and time of the appointment
+duration	Integer	NOT NULL, Default: 30	Duration in minutes
+status	String(20)	NOT NULL, Default: "Scheduled"	Appointment status
+notes	Text	NULL	Additional notes
+created_at	DateTime	NOT NULL	Record creation timestamp
+updated_at	DateTime	NOT NULL	Record update timestamp
+4. Hospital Resource Table
+Column	Type	Constraints	Description
+resource_id	UUID	Primary Key	Unique identifier for the resource
+resource_name	String(100)	NOT NULL	Name of the resource
+resource_type	String(50)	NOT NULL	Type (Room, Equipment, Bed)
+location	String(100)	NULL	Physical location
+status	String(20)	NOT NULL, Default: "Available"	Current status
+assigned_to_patient_id	UUID	Foreign Key (patients.patient_id), NULL	Patient assignment
+assigned_at	DateTime	NULL	Assignment timestamp
+created_at	DateTime	NOT NULL	Record creation timestamp
+updated_at	DateTime	NOT NULL	Record update timestamp
+5. Doctor Schedule Table
+Column	Type	Constraints	Description
+schedule_id	UUID	Primary Key	Unique identifier for the schedule
+doctor_id	UUID	Foreign Key (doctors.doctor_id)	Reference to the doctor
+day_of_week	Integer	NOT NULL	Day of week (0=Sunday, 1=Monday, etc.)
+start_time	Time	NOT NULL	Start time of availability
+end_time	Time	NOT NULL	End time of availability
+is_active	Boolean	NOT NULL, Default: true	Whether the schedule is active
+6. User Table
+Column	Type	Constraints	Description
+user_id	UUID	Primary Key	Unique identifier for the user
+username	String(50)	NOT NULL, Unique, Indexed	Username for login
+email	String(100)	NOT NULL, Unique, Indexed	Email address
+hashed_password	String(255)	NOT NULL	Securely hashed password
+full_name	String(100)	NOT NULL	User's full name
+role	Enum	NOT NULL, Default: "staff"	User role (admin, doctor, staff, patient)
+is_active	Boolean	NOT NULL, Default: true	Whether the user is active
+created_at	DateTime	NOT NULL	Record creation timestamp
+updated_at	DateTime	NOT NULL	Record update timestamp
+last_login	DateTime	NULL	Last login timestamp
+These tables form the core data structure of the Hospital Management System, with relationships between them to maintain data integrity and support the application's functionality.
