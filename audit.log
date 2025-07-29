@@ -1,0 +1,1 @@
+2025-07-29 15:04:44,862 - INFO - AUDIT: {'timestamp': '2025-07-29T09:04:44.862365', 'action': 'PATIENT_CREATED', 'resource_type': 'Patient', 'resource_id': 'test-id', 'user_id': 'test-user', 'ip_address': '127.0.0.1', 'details': {}}
